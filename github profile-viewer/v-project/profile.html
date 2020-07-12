@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@500&display=swap" rel="stylesheet">
+	<script type="text/javascript">
+		profileName = localStorage["name"];
+
+		function myFun() {
+			var profile = profileName;
+			document.getElementById("myText").innerHTML = profile;
+		}
+		
+
+       
+
+        requestUserRepos(profileName);
+
+		function requestUserRepos(profileName){
+
+			const xhr = new XMLHttpRequest();
+			const url = `https://api.github.com/users/${profileName}/repos`;
+			xhr.open('GET', url, true);
+			xhr.onload = function () {
+			const data = JSON.parse(this.response);
+			for (let i in data) {
+					let ul = document.getElementById('userRepos');
+            		let li = document.createElement('li');
+            		li.classList.add('list-group-item')
+        
+            		li.innerHTML = (`
+            			<div class="row">
+  							<div class="col-sm-12">
+    						<div class="card">
+      						<div class="card-body" style="background-color: #D3D3D3;">
+        					<p><strong>Repo:</strong> ${data[i].name}</p>
+        					<p><strong>Description:</strong> ${data[i].description}</p>
+        					<p><strong>URL:</strong> <a href="${data[i].html_url}">${data[i].html_url}</a></p>
+      						</div>
+    						</div>
+ 						</div>
+                	
+                	
+                	
+                	<br>
+                	<br>
+            	`);
+            
+            
+            	ul.appendChild(li);
+        
+        	}
+
+    	}
+    
+    
+    	xhr.send();
+    
+	}
+	</script>
+</head>
+<body onload="myFun()">	
+	<div class="jumbotron" style="margin-bottom: 70px;">
+		
+			<h1 style="font-family: 'Roboto Slab', serif; margin-left: 100px;"><i class="fab fa-github"></i> <span id="myText"></span></h1>
+		
+	</div>
+
+	<div class="container" style="margin-left: 100px;">
+		
+		<ul id="userRepos" class="list-group mx-auto mb-5" style="width: 500px">
+
+		</ul>
+	</div>
+	
+	<script type="text/javascript" src="add.js"></script>
+</body>
+</html>
